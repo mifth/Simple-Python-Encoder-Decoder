@@ -3,16 +3,15 @@ from tkinter import ttk
 import random
 
 
-def generate_charset(seed=None):
-    if seed is not None:
-        random.seed(seed)
+def generate_charset(seed: int = 0):
+    rng = random.Random(seed)  # Local RNG instance
     charset = list(
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
         "0123456789"
         "!@#$%^&*()-_=+[]{}|;:',.<>?/`~\"\\"
     )
-    random.shuffle(charset)
+    rng.shuffle(charset)
     return ''.join(charset)
 
 
