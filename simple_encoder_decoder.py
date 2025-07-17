@@ -4,9 +4,9 @@ from tkinter import ttk
 import random
 
 
-def generate_charset(seed=None):
+def generate_charset(seed=123):
     if seed is not None:
-        random.seed(seed)  # Optional: for reproducible charset
+        random.seed(seed)
 
     alpha = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
     random.shuffle(alpha)
