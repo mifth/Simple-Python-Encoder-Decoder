@@ -4,7 +4,7 @@ from tkinter import ttk
 import random
 
 
-def generate_charset(seed=123):
+def generate_charset(seed=357):
     if seed is not None:
         random.seed(seed)
 
