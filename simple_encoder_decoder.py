@@ -11,7 +11,6 @@ def generate_charset(seed=None):
         "abcdefghijklmnopqrstuvwxyz"
         "0123456789"
         "!@#$%^&*()-_=+[]{}|;:',.<>?/`~\"\\"
-        "“”‘’"
     )
     random.shuffle(charset)
     return ''.join(charset)
