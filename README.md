@@ -1,6 +1,6 @@
 # Simple-Python-Encoder-Decoder
 
-To create your own exe file for Windows:
+You can run the simple_encoder_decoder.py directly with Python or create your own exe file for Windows:
 ```
 pip install pyinstaller
 pyinstaller --onefile cc:/your_path/simple_encoder_decoder.py
