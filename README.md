@@ -13,7 +13,9 @@ import simple_encoder_decoder as sed
 
 shift = 5
 charset = sed.generate_charset(12345)
+
 my_text: str = "Hello World"
+
 encoded_text = sed.encode(my_text, charset, shift)
 decoded_text = sed.decode(encoded_text, charset, shift)
 ```
