@@ -1,7 +1,8 @@
 # Simple-Python-Encoder-Decoder
 This is a simple Python tool to encode/decode your passwords, private keys etc. It can be used in Python or as an exe file for Windows/Linux/Mac.
 
-<img width="627" height="388" alt="image" src="https://github.com/user-attachments/assets/77e5cd70-b50d-47b1-b278-9769f020d925" />
+<img width="472" height="449" alt="image" src="https://github.com/user-attachments/assets/413efb2f-59f2-42ba-85ac-e4ff8b285cb5" />
+
 
 You can run the simple_encoder_decoder.py directly with Python or create your own exe file for Windows/Linux/Mac:
 ```
