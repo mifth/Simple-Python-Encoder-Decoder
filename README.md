@@ -27,4 +27,19 @@ decoded_text = sed.decode(encoded_text, charset, shift_pattern)
 print(input_text, encoded_text, decoded_text)
 ```
 
+Another variant(less procedural):
+```
+import simple_encoder_decoder as sed
+
+seed = 12345
+charset = sed.generate_charset(seed)
+shift_pattern = [2, 5, 6, 8, 25, 86]  # Max value is 100!
+
+input_text: str = "Hello World"
+
+encoded_text = sed.encode(input_text, charset, shift_pattern)
+decoded_text = sed.decode(encoded_text, charset, shift_pattern)
+print(input_text, encoded_text, decoded_text)
+```
+
 USE ON YOUR OWN RISK!
