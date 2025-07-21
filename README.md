@@ -10,17 +10,20 @@ pip install pyinstaller
 pyinstaller --onefile c:/your_path/simple_encoder_decoder.py
 ```
 
-There are 3 main functions which you can use in your projects to encode/decode texts:
+How you can use the lib in your Python projects to encode/decode texts:
 ```
 import simple_encoder_decoder as sed
 
 shift = 5
-charset = sed.generate_charset(12345)
+seed = 12345
+charset = sed.generate_charset(seed)
+shift_pattern = get_shift_pattern(charset, shift, seed)
 
-my_text: str = "Hello World"
+input_text: str = "Hello World"
 
-encoded_text = sed.encode(my_text, charset, shift)
-decoded_text = sed.decode(encoded_text, charset, shift)
+encoded_text = sed.encode(input_text, charset, shift_pattern)
+decoded_text = sed.decode(encoded_text, charset, shift_pattern)
+print(input_text, encoded_text, decoded_text)
 ```
 
 USE ON YOUR OWN RISK!
