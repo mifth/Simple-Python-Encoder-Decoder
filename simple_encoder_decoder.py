@@ -3,6 +3,17 @@ from tkinter import ttk
 import random
 
 
+def get_shift_pattern(charset: str, shift: int, seed: int = 0) -> list:
+    shift_pattern = []
+    for i in range(0, 50):
+        shift_pattern.append((shift * i) % len(charset))
+
+    rng = random.Random(seed)  # Local RNG instance
+    rng.shuffle(shift_pattern)
+
+    return shift_pattern
+
+
 def generate_charset(seed: int = 0):
     rng = random.Random(seed)  # Local RNG instance
     charset = list(
@@ -15,10 +26,12 @@ def generate_charset(seed: int = 0):
     return ''.join(charset)
 
 
-def encode(text: str, charset: str, shift: int) -> str:
+def encode(text: str, charset: str, shift_pattern: list[int]) -> str:
     result = ""
-    for char in text:
+    pattern_length = len(shift_pattern)
+    for i, char in enumerate(text):
         if char in charset:
+            shift = shift_pattern[i % pattern_length]
             index = charset.index(char)
             result += charset[(index + shift) % len(charset)]
         else:
@@ -26,8 +39,10 @@ def encode(text: str, charset: str, shift: int) -> str:
     return result
 
 
-def decode(text: str, charset: str, shift: int) -> str:
-    return encode(text, charset, -shift)
+def decode(text: str, charset: str, shift_pattern: list[int]) -> str:
+    # Negate each shift to reverse the encoding
+    reversed_pattern = [-s for s in shift_pattern]
+    return encode(text, charset, reversed_pattern)
 
 
 class EncoderDecoderUI():
@@ -84,17 +99,19 @@ class EncoderDecoderUI():
     def on_encode(self):
         shift, seed = self.get_seed_and_shift()
         charset = generate_charset(seed)
+        shift_pattern = get_shift_pattern(charset, shift, seed)
         text = self.input_text.get("1.0", tk.END).rstrip('\n')
         self.output_text.delete("1.0", tk.END)
-        self.output_text.insert(tk.END, encode(text, charset, shift))
+        self.output_text.insert(tk.END, encode(text, charset, shift_pattern))
 
 
     def on_decode(self):
         shift, seed = self.get_seed_and_shift()
         charset = generate_charset(seed)
+        shift_pattern = get_shift_pattern(charset, shift, seed)
         text = self.input_text.get("1.0", tk.END).rstrip('\n')
         self.output_text.delete("1.0", tk.END)
-        self.output_text.insert(tk.END, decode(text, charset, shift))
+        self.output_text.insert(tk.END, decode(text, charset, shift_pattern))
 
 
 if __name__ == "__main__":
