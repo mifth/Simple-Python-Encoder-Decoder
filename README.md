@@ -33,7 +33,7 @@ import simple_encoder_decoder as sed
 
 seed = 12345
 charset = sed.generate_charset(seed)
-shift_pattern = [2, 5, 6, 8, 25, 86]  # Max value is 100!
+shift_pattern = [2, 5, 6, 8, 25, 86, 17, 45, 32, 11, 56, 23, 44, 23, 64, 89]  # Max length is 100!
 
 input_text: str = "Hello World"
 
