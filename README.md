@@ -6,7 +6,7 @@ This is a simple Python tool to encode/decode your passwords, private keys etc. 
 You can run the simple_encoder_decoder.py directly with Python or create your own exe file for Windows/Linux/Mac:
 ```
 pip install pyinstaller
-pyinstaller --onefile cc:/your_path/simple_encoder_decoder.py
+pyinstaller --onefile c:/your_path/simple_encoder_decoder.py
 ```
 
 There are 3 main functions which you can use in your projects to encode/decode texts:
