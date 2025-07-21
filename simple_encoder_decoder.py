@@ -3,10 +3,13 @@ from tkinter import ttk
 import random
 
 
-def get_shift_pattern(charset: str, shift: int, seed: int = 0) -> list:
+def get_shift_pattern(shift: int, seed: int, shift_pattern_num: int) -> list:
     shift_pattern = []
-    for i in range(0, 50):
-        shift_pattern.append((shift * i) % len(charset))
+
+    real_shift_pattern_num = max(min(shift_pattern_num, 100), 1)
+
+    for i in range(0, real_shift_pattern_num):
+        shift_pattern.append(shift + i)
 
     rng = random.Random(seed)  # Local RNG instance
     rng.shuffle(shift_pattern)
@@ -46,7 +49,7 @@ def decode(text: str, charset: str, shift_pattern: list[int]) -> str:
 
 
 class EncoderDecoderUI():
-    def __init__(self, seed: int, shift: int):
+    def __init__(self, seed: int, shift: int, shift_pattern_num: int):
         # --- GUI setup ---
         self.root = tk.Tk()
         self.root.title("Text Encoder/Decoder with Seed")
@@ -70,6 +73,11 @@ class EncoderDecoderUI():
         self.shift_entry.insert(0, str(shift))
         self.shift_entry.grid(row=2, column=1, padx=5, sticky="w")
 
+        ttk.Label(self.root, text="ShiftPattern(Max 100):").grid(row=2, column=1, padx=5, sticky="e")
+        self.shift_pattern_entry = ttk.Entry(self.root, width=5)
+        self.shift_pattern_entry.insert(0, str(shift_pattern_num))
+        self.shift_pattern_entry.grid(row=2, column=2, padx=5, sticky="w")
+
         ttk.Label(self.root, text="Seed:").grid(row=2, column=2, padx=5, sticky="e")
         self.seed_entry = ttk.Entry(self.root, width=10)
         self.seed_entry.insert(0, str(seed))
@@ -89,30 +97,31 @@ class EncoderDecoderUI():
     def get_seed_and_shift(self):
         try:
             shift = int(self.shift_entry.get())
+            shift_pattern_num = int(self.shift_pattern_entry.get())
             seed = int(self.seed_entry.get())
         except ValueError:
             self.output_text.delete("1.0", tk.END)
             self.output_text.insert(tk.END, "Error: Shift and Seed must be integers.")
-        return seed, shift
+        return seed, shift, shift_pattern_num
 
 
     def on_encode(self):
-        shift, seed = self.get_seed_and_shift()
+        shift, seed, shift_pattern_num = self.get_seed_and_shift()
         charset = generate_charset(seed)
-        shift_pattern = get_shift_pattern(charset, shift, seed)
+        shift_pattern = get_shift_pattern(shift, seed, shift_pattern_num)
         text = self.input_text.get("1.0", tk.END).rstrip('\n')
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert(tk.END, encode(text, charset, shift_pattern))
 
 
     def on_decode(self):
-        shift, seed = self.get_seed_and_shift()
+        shift, seed, shift_pattern_num = self.get_seed_and_shift()
         charset = generate_charset(seed)
-        shift_pattern = get_shift_pattern(charset, shift, seed)
+        shift_pattern = get_shift_pattern(shift, seed, shift_pattern_num)
         text = self.input_text.get("1.0", tk.END).rstrip('\n')
         self.output_text.delete("1.0", tk.END)
         self.output_text.insert(tk.END, decode(text, charset, shift_pattern))
 
 
 if __name__ == "__main__":
-    EncoderDecoderUI(357, 8)
+    EncoderDecoderUI(357, 8, 20)
