@@ -17,7 +17,8 @@ import simple_encoder_decoder as sed
 shift = 5
 seed = 12345
 charset = sed.generate_charset(seed)
-shift_pattern = get_shift_pattern(charset, shift, seed)
+shift_pattern_num = 20  # Max 100!
+shift_pattern = get_shift_pattern(shift, seed, shift_pattern_num)
 
 input_text: str = "Hello World"
 
