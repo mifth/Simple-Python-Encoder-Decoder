@@ -29,23 +29,53 @@ def generate_charset(seed: int = 0):
     return ''.join(charset)
 
 
-def encode(text: str, charset: str, shift_pattern: list[int]) -> str:
+def get_random_charsets(charset: str, shift_pattern: list[int]) -> list:
+    random_charsets = []
+    for i in shift_pattern:
+        rng = random.Random(i)  # Local RNG instance
+        new_charset = list(charset)
+        rng.shuffle(new_charset)
+        random_charsets.append(new_charset)
+    return random_charsets
+
+
+def _code(text: str, charset: str, shift_pattern: list[int], encode: bool):
     result = ""
+
+    # generate a list of charsets
+    random_charsets = get_random_charsets(charset, shift_pattern)
+
+    # Encode the text using the shift pattern
     pattern_length = len(shift_pattern)
     for i, char in enumerate(text):
         if char in charset:
-            shift = shift_pattern[i % pattern_length]
-            index = charset.index(char)
-            result += charset[(index + shift) % len(charset)]
+            i_shift = i % pattern_length
+            shift = shift_pattern[i_shift]
+
+            random_charset: str = random_charsets[i_shift]
+
+            index = random_charset.index(char)
+
+            # Calculate the new index based on encoding or decoding
+            offset : int
+            if encode:
+                offset = (index + shift) % len(random_charset)
+            else:
+                offset = (index - shift) % len(random_charset)
+
+            # Append the character from the random charset
+            result += random_charset[offset]
         else:
             result += char
     return result
 
 
+def encode(text: str, charset: str, shift_pattern: list[int]) -> str:
+    return _code(text, charset, shift_pattern, encode=True)
+
+
 def decode(text: str, charset: str, shift_pattern: list[int]) -> str:
-    # Negate each shift to reverse the encoding
-    reversed_pattern = [-s for s in shift_pattern]
-    return encode(text, charset, reversed_pattern)
+    return _code(text, charset, shift_pattern, encode=False)
 
 
 class EncoderDecoderUI():
